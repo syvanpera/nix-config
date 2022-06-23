@@ -65,13 +65,13 @@ nixos/install:
 # After nixos/install, run this to finalize. After this, do everything else
 # in the VM unless secrets change.
 nixos/bootstrap:
-	NIX_USER=root $(MAKE) nixos/copy
-	NIX_USER=root $(MAKE) nixos/switch
+	$(MAKE) nixos/copy
+	$(MAKE) nixos/switch
 	ssh $(SSH_OPTIONS) root@$(NIXADDR) " \
 		reboot; \
 	"
 
-# Copy our secrets into the VM
+# Copy secrets from the host into the VM
 nixos/secrets:
 	# GPG keyring
 	rsync -av -e 'ssh $(SSH_OPTIONS)' \
@@ -89,13 +89,13 @@ nixos/copy:
 	rsync -av -e 'ssh $(SSH_OPTIONS)' \
 		--exclude='.git/' \
 		--rsync-path="sudo rsync" \
-		$(MAKEFILE_DIR)/ $(NIX_USER)@$(NIXADDR):/etc/nixos
+		$(MAKEFILE_DIR)/ root@$(NIXADDR):/etc/nixos
 
 # run the nixos-rebuild switch command. This does NOT copy files so you
 # have to run vm/copy before.
 nixos/switch:
-	ssh $(SSH_OPTIONS) $(NIX_USER)@$(NIXADDR) " \
-		sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch \
+	ssh $(SSH_OPTIONS) root@$(NIXADDR) " \
+		NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch \
 	"
 
 # Build an ISO image
