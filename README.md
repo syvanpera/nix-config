@@ -6,7 +6,7 @@ This is very much inspired by the following configurations:
 + [Henrik Lissner](https://github.com/hlissner/dotfiles)
 
 ## Setup
-1. Create and start the virtual machine
+### Create and start the virtual machine
 In a terminal window run:
 
 ```sh
@@ -28,10 +28,10 @@ variable ~NIX_ISO~:
 NIX_ISO=/tmp/nixos-minimal.iso make vm/create
 ```
 
-2. Change the root password
+### Change the root password
 In the VM, switch to root user: `sudo su` and change the password: `passwd` (the new password must be *root*)
 
-3. Install NixOS:
+### Install NixOS:
 ```sh
 NIX_IP=xxx.xxx.xxx.xxx make nixos/install
 ```
@@ -44,11 +44,41 @@ virsh net-dhcp-leases default | grep nixos | awk '{ print $5 }' | sed 's/\/.\*//
 This will end up in an error: `make: *** [Makefile:39: nixos/install] Error 255`
 but you can safely ignore it, it's just because the VM is rebooting.
 
-4. (optional) Take a snapshot of the VM
+### (optional) Take a snapshot of the VM
 At this point you can take a snapshot of the VM if you want, just so you have a good base to return
 to in case you mess something up. See: [snapshot management](#snapshot-management)
 
-5. Bootstrap the nix configuration
+### Bootstrap the nix configuration
+
+## Snapshot management
+
+### Create snapshot
+```sh
+virsh shutdown --domain devbox
+virsh snapshot-create-as --domain devbox --name "pre-bootstrap"
+virsh start devbox
+```
+
+replace `devbox` with the name of your VM if you changed it.
+
+### Reverting back to the snapshot
+```sh
+virsh shutdown --domain VM-NAME
+virsh snapshot-revert --domain VM-NAME --snapshotname "pre-bootstrap" --running
+```
+
+### Listing snapshots
+```sh
+virsh snapshot-list VM-NAME
+```
+
+### Deleting a snapshot
+```sh
+virsh snapshot-delete --domain VM-NAME --snapshotname "pre-bootstrap"
+```
+
+
+## Other stuff
 
 ### Connecting to a running VM
 ```sh
@@ -93,30 +123,4 @@ virsh net-start default
 1. Stop the VM with `virsh destroy devbox`
 2. Remove the domain with `virsh undefine devbox --nvram` (deletes the VM)
 3. Remove the disk image
-
-## Snapshot management
-### Create snapshot
-```sh
-virsh shutdown --domain devbox
-virsh snapshot-create-as --domain devbox --name "pre-bootstrap"
-virsh start devbox
-```
-
-replace `devbox` with the name of your VM if you changed it.
-
-### Reverting back to the snapshot
-```sh
-virsh shutdown --domain VM-NAME
-virsh snapshot-revert --domain VM-NAME --snapshotname "pre-bootstrap" --running
-```
-
-### Listing snapshots
-```sh
-virsh snapshot-list VM-NAME
-```
-
-### Deleting a snapshot
-```sh
-virsh snapshot-delete --domain VM-NAME --snapshotname "pre-bootstrap"
-```
 
