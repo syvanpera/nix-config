@@ -1,6 +1,10 @@
-VM_NAME ?= devbox
+NIX_NAME ?= devbox
+NIX_USER ?= tuomo
+
+NIX_ISO ?= https://channels.nixos.org/nixos-unstable/latest-nixos-minimal-x86_64-linux.iso
+
 VM_IP ?= unset
-VM_DISK_IMAGE ?= /data/libvirt/$(VM_NAME).qcow2
+VM_DISK_IMAGE ?= /data/libvirt/$(NIX_NAME).qcow2
 VM_DISK_SIZE ?= 40
 VM_CPUS ?= 4
 VM_MEMORY ?= 8196
@@ -8,10 +12,6 @@ VM_MEMORY ?= 8196
 #   - sda for SATA/IDE
 #   - vda for virtio
 VM_BLOCK_DEVICE ?= vda
-
-NIX_USER ?= tuomo
-
-NIX_ISO ?= https://channels.nixos.org/nixos-unstable/latest-nixos-minimal-x86_64-linux.iso
 
 # Get the path to this Makefile and directory
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
@@ -22,7 +22,7 @@ SSH_OPTIONS=-o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o Strict
 
 # Creates a new VM and boots to the latest NixOS minimal install ISO.
 vm/create:
-	virt-install --name $(VM_NAME) \
+	virt-install --name $(NIX_NAME) \
 		--memory=$(VM_MEMORY) \
 		--vcpus=$(VM_CPUS) \
 		--disk path=$(VM_DISK_IMAGE),device=disk,bus=virtio,size=$(VM_DISK_SIZE) \
