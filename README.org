@@ -14,8 +14,7 @@ The default name for the VM is ~devbox~, to use a different name, provide the na
 NIXNAME=devbox-2 make vm/create
 #+end_src
 
-After the VM is started (this might take a while as it downloads the ISO and boots the installer),
-you should be dropped in the console of the running VM.
+Wait for the VM to start (this might take a while as it downloads the ISO and boots the installer),
 If you want to save some time, you can also give the path to the installer ISO using the environment
 variable ~NIXISO~. ie.
 #+begin_src shell

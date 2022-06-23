@@ -34,9 +34,9 @@ vm/create:
 		--cdrom $(NIXISO) \
 		--osinfo detect=on,require=on \
 		--network network=default \
-		--boot=uefi \
-		--nographics \
-		--console pty,target_type=virtio
+		--boot=uefi
+		# --nographics \
+		# --console pty,target_type=virtio
 
 # Install the base NixOS system
 nixos/install:
