@@ -1,3 +1,7 @@
+* My NixOS VM development environment
+
+This is very much inspired by Mitchell Hashimotos [[https://github.com/mitchellh/nixos-config][nixos-config]].
+
 ** Setup
 *** Create and start the virtual machine
 In a terminal window run:
