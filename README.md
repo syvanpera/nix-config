@@ -5,6 +5,16 @@ This is very much inspired by (at least) the following configurations:
 + [Gabriel Volpe](https://github.com/gvolpe/nix-config)
 + [Henrik Lissner](https://github.com/hlissner/dotfiles)
 
+- Apply system:
+  ```sh
+  sudo nixos-rebuild switch --flake .#
+  ```
+- Apply Home Manager:
+  ```sh
+  nix build --flake .#homeConfigurations.tuomo.activationPackage
+  ./result/activate
+  ```
+
 ## Setup
 
 1. Create and start the virtual machine
@@ -143,4 +153,3 @@ virsh --connect qemu:///system console devbox
 1. Stop the VM with `virsh destroy devbox`
 2. Remove the domain with `virsh undefine devbox --nvram` (deletes the VM)
 3. Remove the disk image
-
