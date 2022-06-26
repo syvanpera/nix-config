@@ -11,6 +11,10 @@ This is very much inspired by (at least) the following configurations:
   ```
 - Apply Home Manager:
   ```sh
+  home-manager switch --flake .#tuomo
+  ```
+  or
+  ```sh
   nix build --flake .#homeConfigurations.tuomo.activationPackage
   ./result/activate
   ```
