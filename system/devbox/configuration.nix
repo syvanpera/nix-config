@@ -15,6 +15,10 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  # Make things work in QEMU VM
+  services.qemuGuest.enable = true;
+  services.spice-vdagentd.enable = true;
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -38,9 +42,6 @@
     LC_TIME = "fi_FI.utf8";
   };
 
-  # The VM is running on QEMU
-  services.qemuGuest.enable = true;
-
   # Configure X11
   services.xserver = {
     enable = true;
@@ -50,6 +51,8 @@
     xkbOptions = "caps:ctrl_modifier";
 
     windowManager.i3.enable = true;
+
+    # videoDrivers = ["qxl"];
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
