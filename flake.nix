@@ -37,7 +37,9 @@
         inherit pkgs;
 
         modules = [
-          ./users/tuomo/home.nix
+          ./home-manager/tuomo.nix
+          ./home-manager/modules/home-manager.nix
+          ./home-manager/modules/git.nix
         ];
       };
     };
