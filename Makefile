@@ -5,6 +5,7 @@ NIX_ISO ?= https://channels.nixos.org/nixos-unstable/latest-nixos-minimal-x86_64
 
 NIX_CONF_REPO_URL ?= https://github.com/syvanpera/nix-config.git
 NIX_CONF_REPO_BRANCH ?= flakes
+NIX_CONF_DIR ?= /etc/nix-config
 
 VM_IP ?= unset
 VM_DISK_IMAGE ?= /data/libvirt/$(NIX_NAME).qcow2
@@ -69,24 +70,34 @@ nixos/install:
 # After nixos/install, run this to finalize. After this, do everything else
 # in the VM unless secrets change.
 nixos/bootstrap:
-	$(MAKE) nixos/clone
+	NIX_USER=root $(MAKE) nixos/clone
 	$(MAKE) nixos/switch
 	ssh $(SSH_OPTIONS) root@$(VM_IP) " \
 		reboot; \
 	"
 
+nixos/usersetup:
+	NIX_CONF_DIR=/home/$(NIX_USER)/nix-config $(MAKE) nixos/clone
+	$(MAKE) nixos/secrets
+	ssh $(SSH_OPTIONS) $(NIX_USER)@$(VM_IP) " \
+		cd /home/$(NIX_USER)/nix-config; \
+		nix build .#homeConfigurations.$(NIX_USER).activationPackage; \
+		./result/activate; \
+		reboot; \
+	"
+
 # Checkout my Nix configurations repo into the VM.
 nixos/clone:
-	ssh $(SSH_OPTIONS) root@$(VM_IP) " \
-		git clone --branch $(NIX_CONF_REPO_BRANCH) $(NIX_CONF_REPO_URL) /etc/nix-config; \
-		cp /etc/nixos/hardware-configuration.nix /etc/nix-config/system/$(NIX_NAME); \
+	ssh $(SSH_OPTIONS) $(NIX_USER)@$(VM_IP) " \
+		git clone --branch $(NIX_CONF_REPO_BRANCH) $(NIX_CONF_REPO_URL) $(NIX_CONF_DIR); \
+		cp /etc/nixos/hardware-configuration.nix $(NIX_CONF_DIR)/system/$(NIX_NAME); \
 	"
 
 # run the nixos-rebuild switch command. This does NOT copy files so you
 # have to run nixos/clone before.
 nixos/switch:
 	ssh $(SSH_OPTIONS) root@$(VM_IP) " \
-		cd /etc/nix-config && nixos-rebuild switch --flake .#$(NIX_NAME) \
+		cd $(NIX_CONF_DIR) && nixos-rebuild switch --flake .#$(NIX_NAME) \
 	"
 
 # Copy secrets from the host into the VM

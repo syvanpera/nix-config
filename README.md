@@ -11,12 +11,12 @@ This is very much inspired by (at least) the following configurations:
   ```
 - Apply Home Manager:
   ```sh
-  home-manager switch --flake .#tuomo
-  ```
-  or
-  ```sh
-  nix build --flake .#homeConfigurations.tuomo.activationPackage
+  nix build .#homeConfigurations.tuomo.activationPackage
   ./result/activate
+  ```
+  after you've done the above once, you can also use:
+  ```sh
+  home-manager switch --flake .#tuomo
   ```
 
 ## Setup
@@ -49,7 +49,7 @@ This is very much inspired by (at least) the following configurations:
 
 3. Install NixOS
    ```sh
-   NIX_IP=xxx.xxx.xxx.xxx make nixos/install
+   VM_IP=xxx.xxx.xxx.xxx make nixos/install
    ```
 
    You can find out the IP address of the VM either by running `ip a` in the VM
@@ -69,7 +69,7 @@ This is very much inspired by (at least) the following configurations:
 
 5. Bootstrap the nix configuration
    ```sh
-   make nixos/bootstrap
+   VM_IP=xxx.xxx.xxx.xxx make nixos/bootstrap
    ```
 
    This will by default create a user `tuomo`, but if you want to change that,
@@ -84,7 +84,15 @@ This is very much inspired by (at least) the following configurations:
 
    You might also want to change the root password and disable ssh for root.
 
-7. Enjoy!
+7. Finalize the user setup
+   ```sh
+   VM_IP=xxx.xxx.xxx.xxx make nixos/usersetup
+   ```
+
+   This will apply install Home Manager and apply user configurations using
+   Home Manager.
+
+8. Enjoy!
 
 ## Snapshot management
 
