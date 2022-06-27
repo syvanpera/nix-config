@@ -32,6 +32,7 @@
     userEmail = "tuomo.syvanpera@gmail.com";
     aliases = {
       st = "status";
+      co = "checkout";
     };
   };
 }
