@@ -3,7 +3,11 @@ NIX_USER ?= tuomo
 
 NIX_ISO ?= https://channels.nixos.org/nixos-unstable/latest-nixos-minimal-x86_64-linux.iso
 
-NIX_CONF_REPO_URL ?= https://github.com/syvanpera/nix-config.git
+PROTOCOL_HTTPS ?= https://github.com/
+PROTOCOL_GIT ?= git@github.com:
+
+NIX_CONF_REPO_PROTOCOL ?= $(PROTOCOL_HTTPS)
+NIX_CONF_REPO ?= syvanpera/nix-config.git
 NIX_CONF_REPO_BRANCH ?= flakes
 NIX_CONF_DIR ?= /etc/nix-config
 
@@ -77,7 +81,7 @@ nixos/bootstrap:
 	"
 
 nixos/usersetup:
-	NIX_CONF_DIR=/home/$(NIX_USER)/nix-config $(MAKE) nixos/clone
+	NIX_CONF_DIR=/home/$(NIX_USER)/nix-config NIX_CONF_REPO_PROTOCOL=$(PROTOCOL_GIT) $(MAKE) nixos/clone
 	$(MAKE) nixos/secrets
 	ssh $(SSH_OPTIONS) $(NIX_USER)@$(VM_IP) " \
 		cd /home/$(NIX_USER)/nix-config; \
@@ -89,7 +93,7 @@ nixos/usersetup:
 # Checkout my Nix configurations repo into the VM.
 nixos/clone:
 	ssh $(SSH_OPTIONS) $(NIX_USER)@$(VM_IP) " \
-		git clone --branch $(NIX_CONF_REPO_BRANCH) $(NIX_CONF_REPO_URL) $(NIX_CONF_DIR); \
+		git clone --branch $(NIX_CONF_REPO_BRANCH) $(NIX_CONF_REPO_PROTOCOL)$(NIX_CONF_REPO) $(NIX_CONF_DIR); \
 		cp /etc/nixos/hardware-configuration.nix $(NIX_CONF_DIR)/system/$(NIX_NAME); \
 	"
 
