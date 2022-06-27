@@ -78,7 +78,8 @@ nixos/bootstrap:
 # Checkout my Nix configurations repo into the VM.
 nixos/clone:
 	ssh $(SSH_OPTIONS) root@$(VM_IP) " \
-		git clone --branch $(NIX_CONF_REPO_BRANCH) $(NIX_CONF_REPO_URL) /etc/nix-config \
+		git clone --branch $(NIX_CONF_REPO_BRANCH) $(NIX_CONF_REPO_URL) /etc/nix-config; \
+		cp /etc/nixos/hardware-configuration.nix /etc/nix-config/system/$(NIX_NAME); \
 	"
 
 # run the nixos-rebuild switch command. This does NOT copy files so you
