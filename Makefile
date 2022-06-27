@@ -81,12 +81,14 @@ nixos/bootstrap:
 	"
 
 nixos/usersetup:
-	NIX_CONF_DIR=/home/$(NIX_USER)/nix-config NIX_CONF_REPO_PROTOCOL=$(PROTOCOL_GIT) $(MAKE) nixos/clone
 	$(MAKE) nixos/secrets
+	NIX_CONF_DIR=/home/$(NIX_USER)/nix-config NIX_CONF_REPO_PROTOCOL=$(PROTOCOL_GIT) $(MAKE) nixos/clone
 	ssh $(SSH_OPTIONS) $(NIX_USER)@$(VM_IP) " \
 		cd /home/$(NIX_USER)/nix-config; \
 		nix build .#homeConfigurations.$(NIX_USER).activationPackage; \
 		./result/activate; \
+	"
+	ssh $(SSH_OPTIONS) root@$(VM_IP) " \
 		reboot; \
 	"
 
