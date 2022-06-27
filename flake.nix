@@ -22,6 +22,14 @@
           ./system/omnumnom/configuration.nix
         ];
       };
+
+      devbox = nixpkgs.lib.nixosSystem {
+        inherit system;
+
+        modules = [
+          ./system/devbox/configuration.nix
+        ];
+      };
     };
 
     homeConfigurations = {
