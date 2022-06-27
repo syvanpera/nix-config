@@ -38,6 +38,9 @@
     LC_TIME = "fi_FI.utf8";
   };
 
+  # The VM is running on QEMU
+  services.qemuGuest.enable = true;
+
   # Configure X11
   services.xserver = {
     enable = true;
