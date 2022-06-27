@@ -28,7 +28,6 @@
 
       core = {
         editor = "nvim";
-        pager = "delta";
       };
     };
   };
