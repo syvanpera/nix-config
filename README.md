@@ -5,20 +5,6 @@ This is very much inspired by (at least) the following configurations:
 + [Gabriel Volpe](https://github.com/gvolpe/nix-config)
 + [Henrik Lissner](https://github.com/hlissner/dotfiles)
 
-- Apply system:
-  ```sh
-  sudo nixos-rebuild switch --flake .#
-  ```
-- Apply Home Manager:
-  ```sh
-  nix build .#homeConfigurations.tuomo.activationPackage
-  ./result/activate
-  ```
-  after you've done the above once, you can also use:
-  ```sh
-  home-manager switch --flake .#tuomo
-  ```
-
 ## Setup
 
 1. Create and start the virtual machine
@@ -93,6 +79,15 @@ This is very much inspired by (at least) the following configurations:
    Home Manager.
 
 8. Enjoy!
+   After making any changes to the `home-manager` configs, (in the nix-config repo folder) run:
+   ```sh
+   home-manager switch --flake .#tuomo
+   ```
+
+   And after any system wide changes, (in the nix-config repo folder) run:
+   ```sh
+   sudo nixos-rebuild switch --flake .#
+   ```
 
 ## Snapshot management
 
