@@ -3,9 +3,12 @@ NIX_USER ?= tuomo
 
 NIX_ISO ?= https://channels.nixos.org/nixos-unstable/latest-nixos-minimal-x86_64-linux.iso
 
+NIX_CONF_REPO_URL ?= https://github.com/syvanpera/nix-config.git
+NIX_CONF_REPO_BRANCH ?= flakes
+
 VM_IP ?= unset
 VM_DISK_IMAGE ?= /data/libvirt/$(NIX_NAME).qcow2
-VM_DISK_SIZE ?= 40
+VM_DISK_SIZE ?= 50
 VM_CPUS ?= 4
 VM_MEMORY ?= 8196
 # The block device prefix to use.
@@ -37,7 +40,7 @@ vm/create:
 # and just set the password of the root user to "root". This will install NixOS.
 # After installing NixOS, you must reboot and set the root password for the next step.
 nixos/install:
-	ssh $(SSH_OPTIONS) root@$(NIXADDR) " \
+	ssh $(SSH_OPTIONS) root@$(VM_IP) " \
 		parted /dev/$(VM_BLOCK_DEVICE) -- mklabel gpt; \
 		parted /dev/$(VM_BLOCK_DEVICE) -- mkpart primary 512MiB -8GiB; \
 		parted /dev/$(VM_BLOCK_DEVICE) -- mkpart primary linux-swap -8GiB 100\%; \
@@ -53,6 +56,7 @@ nixos/install:
 		sed --in-place '/system\.stateVersion = .*/a\\\n\
   nix.package = pkgs.nixUnstable;\n\
   nix.extraOptions = \"experimental-features = nix-command flakes\";\n\
+  environment.systemPackages = [ pkgs.git ];\n\
   services.openssh.enable = true;\n\
   services.openssh.passwordAuthentication = true;\n\
   services.openssh.permitRootLogin = \"yes\";\n\
@@ -65,10 +69,23 @@ nixos/install:
 # After nixos/install, run this to finalize. After this, do everything else
 # in the VM unless secrets change.
 nixos/bootstrap:
-	$(MAKE) nixos/copy
+	$(MAKE) nixos/clone
 	$(MAKE) nixos/switch
-	ssh $(SSH_OPTIONS) root@$(NIXADDR) " \
+	ssh $(SSH_OPTIONS) root@$(VM_IP) " \
 		reboot; \
+	"
+
+# Checkout my Nix configurations repo into the VM.
+nixos/clone:
+	ssh $(SSH_OPTIONS) root@$(VM_IP) " \
+		git clone --branch $(NIX_CONF_REPO_BRANCH) $(NIX_CONF_REPO_URL) /etc/nix-config \
+	"
+
+# run the nixos-rebuild switch command. This does NOT copy files so you
+# have to run nixos/clone before.
+nixos/switch:
+	ssh $(SSH_OPTIONS) root@$(VM_IP) " \
+		cd /etc/nix-config && nixos-rebuild switch --flake .#$(NIX_NAME) \
 	"
 
 # Copy secrets from the host into the VM
@@ -78,25 +95,11 @@ nixos/secrets:
 		--exclude='.#*' \
 		--exclude='S.*' \
 		--exclude='*.conf' \
-		$(HOME)/.gnupg/ $(NIX_USER)@$(NIXADDR):~/.gnupg
+		$(HOME)/.gnupg/ $(NIX_USER)@$(VM_IP):~/.gnupg
 	# SSH keys
 	rsync -av -e 'ssh $(SSH_OPTIONS)' \
 		--exclude='environment' \
-		$(HOME)/.ssh/ $(NIX_USER)@$(NIXADDR):~/.ssh
-
-# Copy the Nix configurations into the VM.
-nixos/copy:
-	rsync -av -e 'ssh $(SSH_OPTIONS)' \
-		--exclude='.git/' \
-		--rsync-path="sudo rsync" \
-		$(MAKEFILE_DIR)/ root@$(NIXADDR):/etc/nixos
-
-# run the nixos-rebuild switch command. This does NOT copy files so you
-# have to run vm/copy before.
-nixos/switch:
-	ssh $(SSH_OPTIONS) root@$(NIXADDR) " \
-		NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch \
-	"
+		$(HOME)/.ssh/ $(NIX_USER)@$(VM_IP):~/.ssh
 
 # Build an ISO image
 iso/nixos.iso:
