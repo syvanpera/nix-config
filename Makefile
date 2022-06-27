@@ -8,7 +8,7 @@ PROTOCOL_GIT ?= git@github.com:
 
 NIX_CONF_REPO_PROTOCOL ?= $(PROTOCOL_HTTPS)
 NIX_CONF_REPO ?= syvanpera/nix-config.git
-NIX_CONF_REPO_BRANCH ?= flakes
+NIX_CONF_REPO_BRANCH ?= main
 NIX_CONF_DIR ?= /etc/nix-config
 
 VM_IP ?= unset
