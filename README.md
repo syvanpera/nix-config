@@ -75,8 +75,7 @@ This is very much inspired by (at least) the following configurations:
    VM_IP=xxx.xxx.xxx.xxx make nixos/usersetup
    ```
 
-   This will apply install Home Manager and apply user configurations using
-   Home Manager.
+   This will install Home Manager and apply user configurations.
 
 8. Enjoy!
    After making any changes to the `home-manager` configs, (in the nix-config repo folder) run:
