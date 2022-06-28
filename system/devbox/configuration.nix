@@ -48,6 +48,8 @@ in
     LC_TIME = "fi_FI.utf8";
   };
 
+  console.useXkbConfig = true;
+
   # Configure X11
   services.xserver = {
     enable = true;
@@ -59,6 +61,7 @@ in
     #videoDrivers = [ "qxl" ];
 
     desktopManager = {
+      wallpaper.mode = "fill";
       xterm.enable = false;
       xfce = {
         enable = true;
@@ -67,11 +70,10 @@ in
       };
     };
 
-    displayManager = {
-      defaultSession = "xfce+i3";
-    };
-
     windowManager.i3.enable = true;
+    windowManager.i3.package = pkgs.i3-gaps;
+
+    displayManager.defaultSession = "xfce+i3";
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.

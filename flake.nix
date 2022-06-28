@@ -38,6 +38,7 @@
 
         modules = [
           ./system/devbox/configuration.nix
+          ./modules/fonts.nix
         ];
       };
     };
