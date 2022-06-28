@@ -34,20 +34,16 @@
            {
              block = "time";
              interval = 60;
-             format = "%a %d/%m %R";
+             format = "%a %d.%m %R";
            }
         ];
         settings = {
           theme =  {
-            name = "solarized-dark";
-            overrides = {
-              idle_bg = "#123456";
-              idle_fg = "#abcdef";
-            };
+            name = "nord-dark";
           };
         };
         icons = "awesome5";
-        theme = "gruvbox-dark";
+        theme = "nord-dark";
       };
     };
   };
@@ -80,6 +76,11 @@
 
       bars = [
         rec {
+          fonts = {
+            names = [ "monospace" "Font Awesome 5 Free" ];
+            style = "Regular";
+            size = 10.0;
+          };
           position = "bottom";
           statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-${position}.toml";
         }
