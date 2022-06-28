@@ -1,5 +1,7 @@
-{ config, pkgs, ... }:
-
+{ config, lib, pkgs, ... }:
+let
+  mkSure = lib.mkOverride 0;
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -17,7 +19,11 @@
 
   # Make things work in QEMU VM
   services.qemuGuest.enable = true;
-  services.spice-vdagentd.enable = true;
+  services.spice-vdagentd.enable = mkSure true;
+
+  #virtualisation.qemu.options = [ "-vga qxl" ];
+  #virtualisation.memorySize = 8192;
+  #virtualisation.cores = 4;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -50,6 +56,8 @@
     xkbVariant = "nodeadkeys";
     xkbOptions = "caps:ctrl_modifier";
 
+    #videoDrivers = [ "qxl" ];
+
     desktopManager = {
       xterm.enable = false;
       xfce = {
@@ -60,7 +68,7 @@
     };
 
     displayManager = {
-      defaultSession = "xfce";
+      defaultSession = "xfce+i3";
     };
 
     windowManager.i3.enable = true;
@@ -81,6 +89,7 @@
     vim
     git
     wget
+    #xorg.xf86videoqxl
   ];
 
   # Enable the OpenSSH daemon.
