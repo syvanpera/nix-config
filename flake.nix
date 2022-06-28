@@ -51,6 +51,7 @@
           ./home-manager/modules/home-manager.nix
           ./home-manager/modules/git.nix
           ./home-manager/modules/nvim.nix
+          ./home-manager/modules/i3.nix
         ];
       };
     };
