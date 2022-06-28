@@ -15,11 +15,11 @@ in
     '';
   };
 
-  nixpkgs.config.allowUnfree = true;
-
   # Make things work in QEMU VM
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = mkSure true;
+
+  nixpkgs.config.allowUnfree = true;
 
   #virtualisation.qemu.options = [ "-vga qxl" ];
   #virtualisation.memorySize = 8192;

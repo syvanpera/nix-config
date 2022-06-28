@@ -33,6 +33,7 @@ vm/create:
 	virt-install --name $(NIX_NAME) \
 		--memory=$(VM_MEMORY) \
 		--vcpus=$(VM_CPUS) \
+		--video qxl,vgamem=65536 \
 		--disk path=$(VM_DISK_IMAGE),device=disk,bus=virtio,size=$(VM_DISK_SIZE) \
 		--cdrom $(NIX_ISO) \
 		--osinfo detect=on,require=on \
