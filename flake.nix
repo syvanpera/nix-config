@@ -46,11 +46,6 @@
       tuomo = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
-        configuration = { pkgs, ... }:
-        {
-          nixpkgs.overlays = overlays;
-        };
-
         modules = [
           ./home-manager/tuomo.nix
           ./home-manager/modules/home-manager.nix
