@@ -43,7 +43,7 @@
           };
         };
         icons = "awesome5";
-        theme = "nord-dark";
+        theme = "solarized-dark";
       };
     };
   };

@@ -6,10 +6,21 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
+    tig
+    bat
     procs
+    neovim-nightly
     ripgrep
     firefox
   ];
+
+  xdg.configFile.nvim = {
+    source = ./config/nvim;
+    recursive = true;
+  };
+
+  # Dotfiles
+  #home.file.".config/nvim".source = ./config/nvim;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

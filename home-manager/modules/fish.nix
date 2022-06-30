@@ -8,6 +8,7 @@
       ls = "${pkgs.exa}/bin/exa";
       l = "ls -l";
       vi = "nvim";
+      cat = "bat";
     };
   };
 }
