@@ -8,6 +8,11 @@
       shell = {
         program = "${pkgs.fish}/bin/fish";
       };
+      font = {
+        normal = {
+          family = "JetBrainsMono Nerd Font";
+        };
+      };
       colors = {
         primary = {
           background = "#1a1b26";
