@@ -22,6 +22,9 @@
   # Dotfiles
   #home.file.".config/nvim".source = ./config/nvim;
 
+  # Local bin
+  home.file.".local/bin".source = ./local/bin;
+
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new Home Manager release introduces backwards

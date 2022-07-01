@@ -10,5 +10,11 @@
       vi = "nvim";
       cat = "bat";
     };
+
+    interactiveShellInit = ''
+      set -Ua fish_user_paths ~/.local/bin
+
+      set -g theme_nerd_fonts yes
+    '';
   };
 }
