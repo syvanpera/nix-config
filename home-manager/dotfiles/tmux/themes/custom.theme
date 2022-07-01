@@ -36,3 +36,4 @@ setw -g window-status-format "#[fg=#74819a,bg=#242837] [#I] #W "
 
 # Active window
 setw -g window-status-current-format "#[fg=#d8dee9,bg=#242837] [#I] #W "
+
