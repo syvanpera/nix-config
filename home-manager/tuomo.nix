@@ -15,15 +15,15 @@
   ];
 
   xdg.configFile.nvim = {
-    source = ./config/nvim;
+    source = ./dotfiles/config/nvim;
     recursive = true;
   };
 
   # Dotfiles
-  #home.file.".config/nvim".source = ./config/nvim;
-
-  # Local bin
-  home.file.".local/bin".source = ./local/bin;
+  #home.file.".config/nvim".source = ./dotfiles/config/nvim;
+  home.file.".local/bin".source = ./dotfiles/local/bin;
+  home.file.".tmux.conf".source = ./dotfiles/tmux.conf;
+  home.file.".tmux".source = ./dotfiles/tmux;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
