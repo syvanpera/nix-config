@@ -56,6 +56,7 @@
           ./home-manager/modules/tmux.nix
 #          ./home-manager/modules/nvim.nix
           ./home-manager/modules/fish.nix
+          ./home-manager/modules/fzf.nix
           ./home-manager/modules/exa.nix
           ./home-manager/modules/alacritty.nix
           ./home-manager/modules/starship.nix
