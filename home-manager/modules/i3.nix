@@ -56,7 +56,7 @@
       modifier = "Mod4";
 
       gaps = {
-        inner = 5;
+        inner = 10;
         outer = 0;
 
         smartGaps = true;
@@ -80,6 +80,9 @@
             names = [ "monospace" "Font Awesome 5 Free" ];
             style = "Regular";
             size = 10.0;
+          };
+          colors = {
+            background = "#1A1B26";
           };
           position = "bottom";
           statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-${position}.toml";
