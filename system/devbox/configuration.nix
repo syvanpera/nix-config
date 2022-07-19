@@ -69,6 +69,8 @@ in
     windowManager.i3.enable = true;
     windowManager.i3.package = pkgs.i3-gaps;
 
+    windowManager.awesome.enable = true;
+
     displayManager.defaultSession = "xfce+i3";
   };
 

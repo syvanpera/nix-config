@@ -52,6 +52,7 @@
           ./home-manager/tuomo.nix
           ./home-manager/modules/home-manager.nix
           ./home-manager/modules/i3.nix
+          ./home-manager/modules/awesome.nix
           ./home-manager/modules/git.nix
           ./home-manager/modules/tmux.nix
 #          ./home-manager/modules/nvim.nix
