@@ -1,7 +1,9 @@
 # My NixOS configuration
 
 This is very much inspired by (at least) the following configurations:
-+ [Mitchell Hashimoto](https://github.com/mitchellh/nixos-config)
++ [Mitchell Hashimoto](https://github.com/mitchellh/nixos-config) Awesome config, mostly copied the base from this
++ [The Nix Way](https://github.com/the-nix-way/nome) Very good learning resource for nix config
+
 + [Gabriel Volpe](https://github.com/gvolpe/nix-config)
 + [Henrik Lissner](https://github.com/hlissner/dotfiles)
 
