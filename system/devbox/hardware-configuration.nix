@@ -4,26 +4,28 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/profiles/qemu-guest.nix")
-    ];
+  imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
+  ];
 
   boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/a1af5842-f97e-44f8-873a-75cd2f045920";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/nixos";
+    fsType = "ext4";
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/2AD8-A550";
-      fsType = "vfat";
-    };
+  # fileSystems."/boot" =
+  #   { device = "/dev/disk/by-uuid/2AD8-A550";
+  #     fsType = "vfat";
+  #   };
 
-  swapDevices = [ ];
+  swapDevices = [
+    { device = "/dev/disk/by-label/swap"; }
+  ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -32,5 +34,6 @@
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
 
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
