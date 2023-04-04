@@ -10,9 +10,9 @@ in
 
   nix = {
     package = pkgs.nixUnstable;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
+    settings = {
+      experimental-features = "nix-command flakes";
+    };
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -21,9 +21,16 @@ in
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = mkSure true;
 
+  boot.loader.grub = {
+    enable = true;
+    version = 2;
+    device = "/dev/vda";
+    configurationLimit = 4;
+  };
+
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # boot.loader.systemd-boot.enable = true;
+  # boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "devbox";
 
