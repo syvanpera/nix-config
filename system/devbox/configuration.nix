@@ -102,8 +102,10 @@ in
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    passwordAuthentication = true;
-    permitRootLogin = "yes";
+    settings = {
+      PasswordAuthentication = true;
+      PermitRootLogin = "yes";
+    };
   };
 
   # This value determines the NixOS release from which the default
