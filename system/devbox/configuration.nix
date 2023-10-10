@@ -55,7 +55,7 @@ in
 
     desktopManager = {
       xterm.enable = false;
-      xfce.enable = true;
+      xfce = {
         enable = true;
         noDesktop = true;
         enableXfwm = false;
