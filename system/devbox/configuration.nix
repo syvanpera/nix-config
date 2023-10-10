@@ -62,7 +62,7 @@ in
       };
     };
 
-    displayManager.defaultSession = "xfce";
+    displayManager.defaultSession = "xfce+i3";
 
     windowManager.i3.enable = true;
     windowManager.i3.package = pkgs.i3-gaps;

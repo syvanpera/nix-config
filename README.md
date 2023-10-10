@@ -158,6 +158,9 @@ This is very much inspired by (at least) the following configurations:
 ### Connecting to a running VM
 
 ```sh
+virt-viewer --connect qemu:///system --wait devbox
+```
+```sh
 virsh --connect qemu:///system console devbox
 ```
 
