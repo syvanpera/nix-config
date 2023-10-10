@@ -7,7 +7,14 @@ This is very much inspired by (at least) the following configurations:
 
 ## Setup
 
-1. Create and start the virtual machine
+1. Download the latest NixOS minimal install ISO
+   In a terminal window run:
+
+   ```sh
+   make nixos/download
+   ```
+
+2. Create and start the virtual machine
    In a terminal window run:
 
    ```sh
@@ -29,11 +36,11 @@ This is very much inspired by (at least) the following configurations:
    NIX_ISO=/tmp/nixos-minimal.iso make vm/create
    ```
 
-2. Change the root password
+3. Change the root password
    In the VM, switch to root user: `sudo su` and change the password: `passwd`
    (the new password must be *root*)
 
-3. Install NixOS
+4. Install NixOS
    ```sh
    VM_IP=xxx.xxx.xxx.xxx make nixos/install
    ```
@@ -48,12 +55,12 @@ This is very much inspired by (at least) the following configurations:
    `make: *** [Makefile:39: nixos/install] Error 255`
    but you can safely ignore this, it's just because the VM is rebooting.
 
-4. Take a snapshot of the VM (optional)
+5. Take a snapshot of the VM (optional)
    At this point you can take a snapshot of the VM if you want, just so you
    have a good base to return to in case you mess something up.
    See: [snapshot management](#snapshot-management)
 
-5. Bootstrap the nix configuration
+6. Bootstrap the nix configuration
    ```sh
    VM_IP=xxx.xxx.xxx.xxx make nixos/bootstrap
    ```
@@ -64,20 +71,20 @@ This is very much inspired by (at least) the following configurations:
    NIX_USER=johndoe make nixos/bootstrap
    ```
 
-6. Change your user's password
+7. Change your user's password
    Login as the normal user (password is `password`) and change the password to
    whatever you want.
 
    You might also want to change the root password and disable ssh for root.
 
-7. Finalize the user setup
+8. Finalize the user setup
    ```sh
    VM_IP=xxx.xxx.xxx.xxx make nixos/usersetup
    ```
 
    This will install Home Manager and apply user configurations.
 
-8. Enjoy!
+9. Enjoy!
    After making any changes to the `home-manager` configs, (in the nix-config repo folder) run:
    ```sh
    home-manager switch --flake .#tuomo

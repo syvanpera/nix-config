@@ -2,6 +2,7 @@ NIX_NAME ?= devbox
 NIX_USER ?= tuomo
 
 NIX_ISO ?= https://channels.nixos.org/nixos-unstable/latest-nixos-minimal-x86_64-linux.iso
+# NIX_ISO ?= ~/Downloads/images/nixos-minimal-23.05.4112.5a237aecb572-x86_64-linux.iso
 
 PROTOCOL_HTTPS ?= https://github.com/
 PROTOCOL_GIT ?= git@github.com:
@@ -12,7 +13,7 @@ NIX_CONF_REPO_BRANCH ?= main
 NIX_CONF_DIR ?= /etc/nix-config
 
 VM_IP ?= unset
-VM_DISK_IMAGE ?= /data/libvirt/$(NIX_NAME).qcow2
+VM_DISK_IMAGE ?= /data/libvirt/images/$(NIX_NAME).qcow2
 VM_DISK_SIZE ?= 50
 VM_CPUS ?= 4
 VM_MEMORY ?= 8196
@@ -28,6 +29,10 @@ MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 # reused a lot so we just store them up here.
 SSH_OPTIONS=-o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 
+# Downloads the latest NixOS minimal install ISO.
+nixos/download:
+	wget $(NIX_ISO)
+
 # Creates a new VM and boots to the latest NixOS minimal install ISO.
 vm/create:
 	virt-install --name $(NIX_NAME) \
@@ -35,12 +40,15 @@ vm/create:
 		--vcpus=$(VM_CPUS) \
 		--video qxl,vgamem=65536 \
 		--disk path=$(VM_DISK_IMAGE),device=disk,bus=virtio,size=$(VM_DISK_SIZE) \
-		--cdrom $(NIX_ISO) \
+		--cdrom latest-nixos-minimal-x86_64-linux.iso \
 		--osinfo detect=on,require=on \
 		--network network=default \
 		--boot=uefi
 		# --nographics \
 		# --console pty,target_type=virtio
+
+vm/ip:
+	@virsh net-dhcp-leases default | grep nixos
 
 # Install NixOS on a brand new VM. The VM should have NixOS minimal ISO in the CD drive
 # and just set the password of the root user to "root". This will install NixOS.

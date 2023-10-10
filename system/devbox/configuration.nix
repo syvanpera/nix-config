@@ -21,16 +21,9 @@ in
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = mkSure true;
 
-  boot.loader.grub = {
-    enable = true;
-    version = 2;
-    device = "/dev/vda";
-    configurationLimit = 4;
-  };
-
   # Use the systemd-boot EFI boot loader.
-  # boot.loader.systemd-boot.enable = true;
-  # boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "devbox";
 
@@ -59,26 +52,20 @@ in
 
     layout = "fi";
     xkbVariant = "nodeadkeys";
-    xkbOptions = "caps:ctrl_modifier";
-
-    #videoDrivers = [ "qxl" ];
 
     desktopManager = {
-      wallpaper.mode = "fill";
       xterm.enable = false;
-      xfce = {
+      xfce.enable = true;
         enable = true;
         noDesktop = true;
         enableXfwm = false;
       };
     };
 
+    displayManager.defaultSession = "xfce";
+
     windowManager.i3.enable = true;
     windowManager.i3.package = pkgs.i3-gaps;
-
-    windowManager.awesome.enable = true;
-
-    displayManager.defaultSession = "xfce+i3";
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -93,7 +80,7 @@ in
 
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
-    vim
+    # vim
     git
     wget
     #xorg.xf86videoqxl
@@ -110,10 +97,10 @@ in
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # on your system were taken. It's perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "22.11"; # Did you read the comment?
+  system.stateVersion = "23.11"; # Did you read the comment?
 }
 
